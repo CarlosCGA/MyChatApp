@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">MyChatApp</string>
 
+    <string name="back">back</string>
+
+    <!-- MAIN FRAGMENT -->
     <string name="welcome_message">Welcome to chat</string>
     <string name="welcome_message_subtitle">Best chat around the world</string>
     <string name="username_hint">Username</string>
     <string name="startChat">Let\'s chat</string>
+
+    <!-- CHAT FRAGMENT -->
+    <string name="welcome_username">Welcome %s</string>
+    <string name="send_message_hint">Enter message</string>
+    <string name="send_message">Send</string>
 
 </resources>
