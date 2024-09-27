@@ -71,7 +71,7 @@
             android:id="@+id/etMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1F"
+            android:layout_weight="1"
             android:hint="@string/send_message_hint"
             android:importantForAutofill="no"
             android:inputType="text" />
