@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.cazulabs.mychatapp.R
 import com.cazulabs.mychatapp.databinding.FragmentMainBinding
 
@@ -17,6 +18,12 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding.btnChat.setOnClickListener {
+            if(!binding.tieUsername.text.isNullOrEmpty()) {
+                findNavController().navigate(R.id.action_main_fragment_to_chat_fragment)
+            }
+        }
+
         return binding.root
     }
 
