@@ -18,13 +18,15 @@ class ChatAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        val binding = when(viewType) {
+        val binding = when (viewType) {
             SENT_MESSAGE -> {
                 ItemChatMeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             }
+
             RECEIVE_MESSAGE -> {
                 ItemChatOtherBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             }
+
             else -> {
                 ItemChatMeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             }
@@ -44,6 +46,12 @@ class ChatAdapter(
             SENT_MESSAGE
         else
             RECEIVE_MESSAGE
+    }
+
+    fun updateList(list: MutableList<MessageModel>) {
+        messageList.clear()
+        messageList.addAll(list)
+        notifyItemInserted(messageList.size - 1)
     }
 
 

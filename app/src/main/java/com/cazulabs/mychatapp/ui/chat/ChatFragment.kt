@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cazulabs.mychatapp.R
 import com.cazulabs.mychatapp.databinding.FragmentChatBinding
+import com.cazulabs.mychatapp.ui.chat.adapter.ChatAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -17,27 +21,55 @@ class ChatFragment : Fragment() {
     private lateinit var binding: FragmentChatBinding
     private val viewModel by viewModels<ChatViewModel>()
 
+    private lateinit var chatAdapter: ChatAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
+
+        setUpUI()
+
+        return binding.root
+    }
+
+    private fun setUpUI() {
         binding.ivBack.setOnClickListener {
             findNavController().navigate(R.id.action_chat_back)
         }
 
         //TODO UPDATE WITH USERNAME
-        binding.tvUsername.text = getString(R.string.welcome_username, getString(R.string.beautiful_user))
+        binding.tvUsername.text =
+            getString(R.string.welcome_username, getString(R.string.beautiful_user))
 
         binding.btnSendMsg.setOnClickListener {
             val msg = binding.etMsg.text.toString()
-            if(msg.isNotEmpty()) {
+            if (msg.isNotEmpty()) {
                 viewModel.sendMessage(msg)
                 binding.etMsg.text.clear()
             }
         }
 
-        return binding.root
+        setUpMessages()
+        subscribeToMessage()
+    }
+
+    private fun setUpMessages() {
+        chatAdapter = ChatAdapter(mutableListOf(), "Carlos")
+        binding.rvChat.apply {
+            adapter = chatAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun subscribeToMessage() {
+        lifecycleScope.launch {
+            viewModel.messageList.collect {
+                chatAdapter.updateList(it.toMutableList())
+                binding.rvChat.scrollToPosition(chatAdapter.itemCount - 1)
+            }
+        }
     }
 
 

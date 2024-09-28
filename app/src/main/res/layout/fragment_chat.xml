@@ -43,8 +43,10 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChat"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        tools:listitem="@layout/item_chat_me"
         app:layout_constraintBottom_toTopOf="@id/dividerBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
