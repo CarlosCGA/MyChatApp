@@ -13,6 +13,7 @@
     <string name="welcome_username">Welcome %s</string>
     <string name="send_message_hint">Enter message</string>
     <string name="send_message">Send</string>
+    <string name="beautiful_user">beautiful user</string>
 
     <!-- ITEM CHAT OTHER -->
     <string name="username_image">Username image</string>

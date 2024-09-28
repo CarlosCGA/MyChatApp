@@ -26,6 +26,9 @@ class ChatFragment : Fragment() {
             findNavController().navigate(R.id.action_chat_back)
         }
 
+        //TODO UPDATE WITH USERNAME
+        binding.tvUsername.text = getString(R.string.welcome_username, getString(R.string.beautiful_user))
+
         binding.btnSendMsg.setOnClickListener {
             val msg = binding.etMsg.text.toString()
             if(msg.isNotEmpty()) {
