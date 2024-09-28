@@ -18,11 +18,12 @@ jobs:
       - name: Load Google Service file
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA | base64 -di > app/google-services.json --
+        run: echo $DATA
+        #run: echo $DATA | base64 -di > app/google-services.json
       - name: Make Gradle executable
         run: chmod +x ./gradlew
       - name: Build with Gradle
-        run: ./gradlew build --stacktrace --debug --scan
+        run: ./gradlew build
       - name: Build Debug APK
         run: ./gradlew assembleDebug
       - name: Generate version.txt for Hub release
