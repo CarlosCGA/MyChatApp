@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChatFragment : Fragment() {
 
     private lateinit var binding: FragmentChatBinding
+    private val viewModel by viewModels<ChatViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +24,10 @@ class ChatFragment : Fragment() {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         binding.ivBack.setOnClickListener {
             findNavController().navigate(R.id.action_chat_back)
+        }
+
+        binding.btnSendMsg.setOnClickListener {
+            viewModel.sendMessage()
         }
 
         return binding.root
