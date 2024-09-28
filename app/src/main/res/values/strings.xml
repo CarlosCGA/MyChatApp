@@ -14,4 +14,7 @@
     <string name="send_message_hint">Enter message</string>
     <string name="send_message">Send</string>
 
+    <!-- ITEM CHAT OTHER -->
+    <string name="username_image">Username image</string>
+
 </resources>
