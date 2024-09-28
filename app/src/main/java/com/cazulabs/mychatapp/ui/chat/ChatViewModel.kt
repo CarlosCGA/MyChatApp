@@ -9,8 +9,7 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(private val sendMessageUseCase: SendMessageUseCase) :
     ViewModel() {
 
-    fun sendMessage() {
-        val msg = "Hello world example message"
+    fun sendMessage(msg: String) {
         sendMessageUseCase(msg)
     }
 

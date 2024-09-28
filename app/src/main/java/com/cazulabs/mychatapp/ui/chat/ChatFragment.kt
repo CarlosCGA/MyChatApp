@@ -27,7 +27,11 @@ class ChatFragment : Fragment() {
         }
 
         binding.btnSendMsg.setOnClickListener {
-            viewModel.sendMessage()
+            val msg = binding.etMsg.text.toString()
+            if(msg.isNotEmpty()) {
+                viewModel.sendMessage(msg)
+                binding.etMsg.text.clear()
+            }
         }
 
         return binding.root
