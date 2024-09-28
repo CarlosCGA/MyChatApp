@@ -18,8 +18,10 @@ jobs:
       - name: Load Google Service file
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA
+        run: echo $DATA > app/google-services.json
         #run: echo $DATA | base64 -di > app/google-services.json
+      - name: Show json information
+        run: openssl x509 -in app/google-services.json -inform DER -text -noout
       - name: Make Gradle executable
         run: chmod +x ./gradlew
       - name: Build with Gradle
