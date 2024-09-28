@@ -8,6 +8,7 @@ import com.cazulabs.mychatapp.domain.SendMessageUseCase
 import com.cazulabs.mychatapp.domain.model.MessageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +22,8 @@ class ChatViewModel @Inject constructor(
         getMessages()
     }
 
-    val messageList = MutableStateFlow<List<MessageModel>>(emptyList())
+    private var _messageList = MutableStateFlow<List<MessageModel>>(emptyList())
+    val messageList: StateFlow<List<MessageModel>> = _messageList
 
     fun sendMessage(msg: String) {
         sendMessageUseCase(msg)
@@ -31,7 +33,7 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             getMessageUseCase().collect {
                 Log.d("CARLOS", "INFO -> $it")
-                messageList.value = it
+                _messageList.value = it
             }
         }
     }
