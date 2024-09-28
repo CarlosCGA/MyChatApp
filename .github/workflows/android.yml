@@ -20,8 +20,10 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > app/google-services.json
         #run: echo $DATA | base64 -di > app/google-services.json
+      - name: Show DATA information
+        run: cat $DATA
       - name: Show json information
-        run: echo app/google-services.json
+        run: cat app/google-services.json
       - name: Make Gradle executable
         run: chmod +x ./gradlew
       - name: Build with Gradle
