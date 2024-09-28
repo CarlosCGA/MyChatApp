@@ -2,13 +2,16 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
     namespace = "com.cazulabs.mychatapp"
     compileSdk = 34
+
+    /*
     version = "1.0.0"
 
     task("appRelease") {
@@ -23,7 +26,7 @@ android {
             dimension = "debug"
             val appName = "MyChatApp"
             manifestPlaceholders["appName"] = appName
-            applicationIdSuffix = ".demo"
+            //applicationIdSuffix = ".demo"
             //versionName = "1.0"
             //versionNameSuffix = ".0"
             //versionCode = (versionName + versionNameSuffix).replace(".", "").toInt()
@@ -37,6 +40,7 @@ android {
             }
         }
     }
+    */
 
     defaultConfig {
         applicationId = "com.cazulabs.mychatapp"
@@ -65,6 +69,10 @@ android {
         jvmTarget = "1.8"
     }
 
+    kotlin {
+        jvmToolchain(8)
+    }
+
     buildFeatures {
         viewBinding = true
     }
@@ -90,8 +98,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
     //DAGGER HILT
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-compiler:2.48")
 
 
 }
