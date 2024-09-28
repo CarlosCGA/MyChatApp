@@ -2,7 +2,9 @@ package com.cazulabs.mychatapp
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class MyChatApp: Application() {
 
     override fun onCreate() {
