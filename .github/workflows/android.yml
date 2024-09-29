@@ -20,7 +20,7 @@ jobs:
           #DATA: ${{ secrets.GOOGLE_SERVICES_JSON_ENCRYPTED_AS_GITHUB }}
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON_ENCRYPTED_AS_GITHUB }}' | base64 -di > app/google-services.json
       - name: Make Gradle executable
-        run: chmod +x ./gradlew --info
+        run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build
       - name: Build Debug APK
