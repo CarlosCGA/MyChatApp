@@ -10,7 +10,7 @@ plugins {
 android {
     namespace = "com.cazulabs.mychatapp"
     compileSdk = 34
-    version = "2.0.3"
+    version = "2.0.4"
 
     task("appRelease") {
         doLast {
