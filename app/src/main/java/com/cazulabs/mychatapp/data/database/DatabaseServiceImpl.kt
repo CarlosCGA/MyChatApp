@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.cazulabs.mychatapp.domain.DatabaseService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DatabaseServiceImpl @Inject constructor(private val context: Context): DatabaseService {
@@ -23,6 +25,10 @@ class DatabaseServiceImpl @Inject constructor(private val context: Context): Dat
         context.userPreferencesDataStore.edit {preferences ->
             preferences[USER_NAME] = username
         }
+    }
+
+    override suspend fun getUsername(): Flow<String> {
+        return context.userPreferencesDataStore.data.map { preferences -> preferences[USER_NAME] ?: "" }
     }
 
 

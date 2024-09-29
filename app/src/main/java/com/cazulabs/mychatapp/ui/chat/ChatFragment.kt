@@ -39,9 +39,10 @@ class ChatFragment : Fragment() {
             findNavController().navigate(R.id.action_chat_back)
         }
 
-        //TODO UPDATE WITH USERNAME
         binding.tvUsername.text =
             getString(R.string.welcome_username, getString(R.string.beautiful_user))
+        binding.tvUsername.text =
+            getString(R.string.welcome_username, viewModel.username)
 
         binding.btnSendMsg.setOnClickListener {
             val msg = binding.etMsg.text.toString()
@@ -56,7 +57,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun setUpMessages() {
-        chatAdapter = ChatAdapter(mutableListOf(), "Carlos")
+        chatAdapter = ChatAdapter(mutableListOf())
         binding.rvChat.apply {
             adapter = chatAdapter
             layoutManager = LinearLayoutManager(context)
@@ -66,7 +67,7 @@ class ChatFragment : Fragment() {
     private fun subscribeToMessage() {
         lifecycleScope.launch {
             viewModel.messageList.collect {
-                chatAdapter.updateList(it.toMutableList())
+                chatAdapter.updateList(it.toMutableList(), viewModel.username)
                 binding.rvChat.scrollToPosition(chatAdapter.itemCount - 1)
             }
         }

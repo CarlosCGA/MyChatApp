@@ -1,5 +1,6 @@
 package com.cazulabs.mychatapp.domain
 
+import android.util.Log
 import com.cazulabs.mychatapp.data.network.FirebaseChatService
 import com.cazulabs.mychatapp.data.network.dto.MessageDTO
 import com.cazulabs.mychatapp.data.network.dto.UserDTO
@@ -8,7 +9,8 @@ import javax.inject.Inject
 
 class SendMessageUseCase @Inject constructor(private val service: FirebaseChatService) {
 
-    operator fun invoke(msg: String) {
+    operator fun invoke(msg: String, username: String) {
+        Log.d("SEND_MESSAGE", "By $username")
         val calendar: Calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val min = getMinute(calendar)
@@ -18,7 +20,7 @@ class SendMessageUseCase @Inject constructor(private val service: FirebaseChatSe
         val month = calendar.get(Calendar.MONTH) + 1 //January is 0, so we have to add 1
         val year = calendar.get(Calendar.YEAR)
 
-        val userDTO = UserDTO("TestUser", false)
+        val userDTO = UserDTO(username, false)
 
         val messageDTO = MessageDTO(
             msg = msg,
