@@ -43,7 +43,7 @@ class MainViewModel @Inject constructor(
 }
 
 sealed class MainViewState {
-    object LOADING : MainViewState()
-    object UNREGISTERED : MainViewState()
-    object REGISTERED : MainViewState()
+    data object LOADING : MainViewState()
+    data object UNREGISTERED : MainViewState()
+    data object REGISTERED : MainViewState()
 }
