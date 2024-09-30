@@ -31,5 +31,9 @@ class DatabaseServiceImpl @Inject constructor(private val context: Context): Dat
         return context.userPreferencesDataStore.data.map { preferences -> preferences[USER_NAME] ?: "" }
     }
 
-
+    override suspend fun logOut() {
+        context.userPreferencesDataStore.edit {preferences ->
+            preferences[USER_NAME] = ""
+        }
+    }
 }

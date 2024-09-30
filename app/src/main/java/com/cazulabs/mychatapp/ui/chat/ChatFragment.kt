@@ -37,7 +37,9 @@ class ChatFragment : Fragment() {
 
     private fun setUpUI() {
         binding.ivBack.setOnClickListener {
-            findNavController().navigate(R.id.action_chat_back)
+            viewModel.logOut {
+                findNavController().navigate(R.id.action_chat_back)
+            }
         }
 
         binding.tvUsername.text =

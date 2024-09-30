@@ -8,4 +8,6 @@ interface DatabaseService {
 
     suspend fun getUsername(): Flow<String>
 
+    suspend fun logOut()
+
 }

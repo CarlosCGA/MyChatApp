@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cazulabs.mychatapp.domain.GetMessageUseCase
 import com.cazulabs.mychatapp.domain.GetUsernameUseCase
+import com.cazulabs.mychatapp.domain.LogOutUseCase
 import com.cazulabs.mychatapp.domain.SendMessageUseCase
 import com.cazulabs.mychatapp.domain.model.MessageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     private val sendMessageUseCase: SendMessageUseCase,
     private val getMessageUseCase: GetMessageUseCase,
-    private val getUsernameUseCase: GetUsernameUseCase
+    private val getUsernameUseCase: GetUsernameUseCase,
+    private val logOutUseCase: LogOutUseCase
 ) : ViewModel() {
 
     init {
@@ -51,6 +54,13 @@ class ChatViewModel @Inject constructor(
             getMessageUseCase().collect {
                 _messageList.value = it
             }
+        }
+    }
+
+    fun logOut(onUserRemoved: () -> Unit) {
+        viewModelScope.launch {
+            async { logOutUseCase() }.await()
+            onUserRemoved()
         }
     }
 
