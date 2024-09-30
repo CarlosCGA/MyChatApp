@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,8 +42,6 @@ class ChatFragment : Fragment() {
 
         binding.tvUsername.text =
             getString(R.string.welcome_username, getString(R.string.beautiful_user))
-        binding.tvUsername.text =
-            getString(R.string.welcome_username, viewModel.username)
 
         binding.btnSendMsg.setOnClickListener {
             val msg = binding.etMsg.text.toString()
@@ -52,12 +51,31 @@ class ChatFragment : Fragment() {
             }
         }
 
-        setUpMessages()
-        subscribeToMessage()
+        subscribeToState()
+    }
+
+    private fun subscribeToState() {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                when (state) {
+                    ChatViewState.LOADING -> {
+                        binding.progressBar.isVisible = true
+                    }
+
+                    ChatViewState.LOADED -> {
+                        binding.progressBar.isVisible = false
+                        binding.tvUsername.text =
+                            getString(R.string.welcome_username, viewModel.username)
+                        setUpMessages()
+                        subscribeToMessage()
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpMessages() {
-        chatAdapter = ChatAdapter(mutableListOf())
+        chatAdapter = ChatAdapter(mutableListOf(), viewModel.username)
         binding.rvChat.apply {
             adapter = chatAdapter
             layoutManager = LinearLayoutManager(context)
@@ -67,11 +85,10 @@ class ChatFragment : Fragment() {
     private fun subscribeToMessage() {
         lifecycleScope.launch {
             viewModel.messageList.collect {
-                chatAdapter.updateList(it.toMutableList(), viewModel.username)
+                chatAdapter.updateList(it.toMutableList())
                 binding.rvChat.scrollToPosition(chatAdapter.itemCount - 1)
             }
         }
     }
-
 
 }

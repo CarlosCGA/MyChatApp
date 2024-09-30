@@ -1,6 +1,5 @@
 package com.cazulabs.mychatapp.ui.chat
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cazulabs.mychatapp.domain.GetMessageUseCase
@@ -8,7 +7,6 @@ import com.cazulabs.mychatapp.domain.GetUsernameUseCase
 import com.cazulabs.mychatapp.domain.SendMessageUseCase
 import com.cazulabs.mychatapp.domain.model.MessageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,14 +20,27 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
-        getUsername()
-        getMessages()
+        initializeUser()
     }
+
+    private var _uiState = MutableStateFlow<ChatViewState>(ChatViewState.LOADING)
+    val uiState: StateFlow<ChatViewState> = _uiState
 
     private var _messageList = MutableStateFlow<List<MessageModel>>(emptyList())
     val messageList: StateFlow<List<MessageModel>> = _messageList
 
     var username = ""
+
+    private fun initializeUser() {
+        viewModelScope.launch {
+            username = getUsernameUseCase()
+            if (username.isNotEmpty()) {
+                _uiState.value = ChatViewState.LOADED
+                getMessages()
+            }
+        }
+    }
+
 
     fun sendMessage(msg: String) {
         sendMessageUseCase(msg, username)
@@ -38,17 +49,14 @@ class ChatViewModel @Inject constructor(
     private fun getMessages() {
         viewModelScope.launch {
             getMessageUseCase().collect {
-                Log.d("CARLOS", "INFO -> $it")
                 _messageList.value = it
             }
         }
     }
 
-    fun getUsername() {
-        viewModelScope.launch(Dispatchers.IO) {
-            username = getUsernameUseCase()
-            Log.d("CARLOS", "USERNAME GOT IN VIEWMODEL -> $username")
-        }
-    }
+}
 
+sealed class ChatViewState {
+    data object LOADING : ChatViewState()
+    data object LOADED : ChatViewState()
 }
